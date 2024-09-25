@@ -30,8 +30,11 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <a class="navbar-brand" href="#">
-            <span class="navbar-brand-full">{{ trans('panel.site_title') }}</span>
-            <span class="navbar-brand-minimized">{{ trans('panel.site_title') }}</span>
+            <span class="navbar-brand-full"><img src="{{ asset('images/logoeds.png') }}" alt="EDS" style="width: 100%;"></span>
+            <!--
+            <span class="navbar-brand-full">{{ trans('panel.site_title') }}<img src="{{ asset('images/logoeds.png') }}" alt="EDS"></span>
+            <span class="navbar-brand-minimized">{{ trans('panel.site_title') }}<img src="{{ asset('images/logoeds.png') }}" alt="EDS"></span>
+            -->
         </a>
         <button class="navbar-toggler sidebar-toggler d-md-down-none" type="button" data-toggle="sidebar-lg-show">
             <span class="navbar-toggler-icon"></span>

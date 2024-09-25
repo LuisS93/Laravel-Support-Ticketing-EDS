@@ -59,6 +59,14 @@
                     </tr>
                     <tr>
                         <th>
+                            {{ trans('cruds.ticket.fields.customer') }}
+                        </th>
+                        <td>
+                            {{ $ticket->customer->company_name ?? '' }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
                             {{ trans('cruds.ticket.fields.status') }}
                         </th>
                         <td>

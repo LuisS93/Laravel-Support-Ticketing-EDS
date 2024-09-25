@@ -12,6 +12,7 @@ use App\Priority;
 use App\Status;
 use App\Ticket;
 use App\User;
+use App\Customer;
 use Gate;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,7 +25,7 @@ class TicketsController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $query = Ticket::with(['status', 'priority', 'category', 'assigned_to_user', 'comments'])
+            $query = Ticket::with(['status', 'priority', 'category', 'assigned_to_user', 'comments','customer'])
                 ->filterTickets($request)
                 ->select(sprintf('%s.*', (new Ticket)->table));
             $table = Datatables::of($query);
@@ -77,9 +78,12 @@ class TicketsController extends Controller
             $table->editColumn('author_name', function ($row) {
                 return $row->author_name ? $row->author_name : "";
             });
-            $table->editColumn('author_email', function ($row) {
-                return $row->author_email ? $row->author_email : "";
+
+           // Aggiungi la colonna customer_name
+            $table->addColumn('customer', function ($row) {
+                return $row->customer ? $row->customer->company_name : ""; // Assicurati che 'company_name' esista nel tuo modello Customer
             });
+
             $table->addColumn('assigned_to_user_name', function ($row) {
                 return $row->assigned_to_user ? $row->assigned_to_user->name : '';
             });
@@ -100,6 +104,7 @@ class TicketsController extends Controller
         $priorities = Priority::all();
         $statuses = Status::all();
         $categories = Category::all();
+        
 
         return view('admin.tickets.index', compact('priorities', 'statuses', 'categories'));
     }
@@ -114,13 +119,14 @@ class TicketsController extends Controller
 
         $categories = Category::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
+        $customers  = Customer::all()->pluck('company_name', 'id')->prepend(trans('global.pleaseSelect'), '');
         $assigned_to_users = User::whereHas('roles', function($query) {
                 $query->whereId(2);
             })
             ->pluck('name', 'id')
             ->prepend(trans('global.pleaseSelect'), '');
 
-        return view('admin.tickets.create', compact('statuses', 'priorities', 'categories', 'assigned_to_users'));
+        return view('admin.tickets.create', compact('statuses', 'priorities', 'categories', 'assigned_to_users', 'customers'));
     }
 
     public function store(StoreTicketRequest $request)
@@ -144,15 +150,17 @@ class TicketsController extends Controller
 
         $categories = Category::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
+        $customers  = Customer::all()->pluck('company_name', 'id')->prepend(trans('global.pleaseSelect'), '');
+
         $assigned_to_users = User::whereHas('roles', function($query) {
                 $query->whereId(2);
             })
             ->pluck('name', 'id')
             ->prepend(trans('global.pleaseSelect'), '');
 
-        $ticket->load('status', 'priority', 'category', 'assigned_to_user');
+        $ticket->load('status', 'priority', 'category', 'assigned_to_user','customer');
 
-        return view('admin.tickets.edit', compact('statuses', 'priorities', 'categories', 'assigned_to_users', 'ticket'));
+        return view('admin.tickets.edit', compact('statuses', 'priorities', 'categories', 'assigned_to_users', 'ticket','customers'));
     }
 
     public function update(UpdateTicketRequest $request, Ticket $ticket)

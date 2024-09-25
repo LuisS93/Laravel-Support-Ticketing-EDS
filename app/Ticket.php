@@ -40,6 +40,7 @@ class Ticket extends Model implements HasMedia
         'author_name',
         'author_email',
         'assigned_to_user_id',
+        'customer_id',
     ];
 
     public static function boot()
@@ -79,6 +80,11 @@ class Ticket extends Model implements HasMedia
     public function category()
     {
         return $this->belongsTo(Category::class, 'category_id');
+    }
+
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class, 'customer_id');
     }
 
     public function assigned_to_user()

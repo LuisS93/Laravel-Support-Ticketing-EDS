@@ -40,7 +40,7 @@
                         {{ trans('cruds.ticket.fields.author_name') }}
                     </th>
                     <th>
-                        {{ trans('cruds.ticket.fields.author_email') }}
+                        {{ trans('cruds.ticket.fields.customer') }}
                     </th>
                     <th>
                         {{ trans('cruds.ticket.fields.assigned_to_user') }}
@@ -167,7 +167,7 @@ $('.card-body').on('change', 'select', function() {
   } 
 },
 { data: 'author_name', name: 'author_name' },
-{ data: 'author_email', name: 'author_email' },
+{ data: 'customer', name: 'customer' },
 { data: 'assigned_to_user_name', name: 'assigned_to_user.name' },
 { data: 'actions', name: '{{ trans('global.actions') }}' }
     ],

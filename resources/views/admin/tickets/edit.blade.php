@@ -48,6 +48,19 @@
                     {{ trans('cruds.ticket.fields.attachments_helper') }}
                 </p>
             </div>
+            <div class="form-group {{ $errors->has('customer_id') ? 'has-error' : '' }}">
+                <label for="customer">{{ trans('cruds.ticket.fields.customer') }}</label>
+                <select name="customer_id" id="customer" class="form-control select2">
+                    @foreach($customers as $id => $customer)
+                        <option value="{{ $id }}" {{ (isset($ticket) && $ticket->customer ? $ticket->customer->id : old('customer_id')) == $id ? 'selected' : '' }}>{{ $customer }}</option>
+                    @endforeach
+                </select>
+                @if($errors->has('customer_id'))
+                    <em class="invalid-feedback">
+                        {{ $errors->first('customer_id') }}
+                    </em>
+                @endif
+            </div>
             <div class="form-group {{ $errors->has('status_id') ? 'has-error' : '' }}">
                 <label for="status">{{ trans('cruds.ticket.fields.status') }}*</label>
                 <select name="status_id" id="status" class="form-control select2" required>

@@ -4,7 +4,10 @@
     <div class="col-md-6">
         <div class="card mx-4">
             <div class="card-body p-4">
-                <h1>{{ trans('panel.site_title') }}</h1>
+                <center>
+                    <img src="{{ asset('images/logoeds.png') }}" alt="EDS" style="width: 70%;">
+                    <h1 class="mt-2">{{ trans('panel.site_title') }}</h1>
+                </center>
 
                 <p class="text-muted">{{ trans('global.reset_password') }}</p>
 
