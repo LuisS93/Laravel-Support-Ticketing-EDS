@@ -13,6 +13,8 @@ use App\Status;
 use App\Ticket;
 use App\User;
 use App\Customer;
+use App\Product;
+use App\SerialNumber;
 use Gate;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,7 +27,7 @@ class TicketsController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $query = Ticket::with(['status', 'priority', 'category', 'assigned_to_user', 'comments','customer'])
+            $query = Ticket::with(['status', 'priority', 'category', 'assigned_to_user', 'comments','customer','product','serialnumber'])
                 ->filterTickets($request)
                 ->select(sprintf('%s.*', (new Ticket)->table));
             $table = Datatables::of($query);
@@ -81,7 +83,17 @@ class TicketsController extends Controller
 
            // Aggiungi la colonna customer_name
             $table->addColumn('customer', function ($row) {
-                return $row->customer ? $row->customer->company_name : ""; // Assicurati che 'company_name' esista nel tuo modello Customer
+                return $row->customer ? $row->customer->company_name : ""; 
+            });
+
+            // Aggiungi la colonna product_name
+            $table->addColumn('product', function ($row) {
+                return $row->product ? $row->product->name : ""; 
+            });
+
+            // Aggiungi la colonna serialnumber
+            $table->addColumn('serialnumber', function ($row) {
+                return $row->serialnumber ? $row->serialnumber->name : ""; 
             });
 
             $table->addColumn('assigned_to_user_name', function ($row) {
@@ -104,9 +116,11 @@ class TicketsController extends Controller
         $priorities = Priority::all();
         $statuses = Status::all();
         $categories = Category::all();
-        
+        $customers  = Customer::all();
+        $products = Product::all();
+        $serialnumbers = SerialNumber::all();
 
-        return view('admin.tickets.index', compact('priorities', 'statuses', 'categories'));
+        return view('admin.tickets.index', compact('priorities', 'statuses', 'categories','products','customers','serialnumbers'));
     }
 
     public function create()
@@ -120,13 +134,20 @@ class TicketsController extends Controller
         $categories = Category::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
         $customers  = Customer::all()->pluck('company_name', 'id')->prepend(trans('global.pleaseSelect'), '');
+
+        $products   = Product::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+
+        $serialnumbers   = SerialNumber::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+
         $assigned_to_users = User::whereHas('roles', function($query) {
-                $query->whereId(2);
+                //$query->whereId(2);
+                $query->where('id', '!=', 2);
+
             })
             ->pluck('name', 'id')
             ->prepend(trans('global.pleaseSelect'), '');
 
-        return view('admin.tickets.create', compact('statuses', 'priorities', 'categories', 'assigned_to_users', 'customers'));
+        return view('admin.tickets.create', compact('statuses', 'priorities', 'categories', 'assigned_to_users', 'customers','products','serialnumbers'));
     }
 
     public function store(StoreTicketRequest $request)
@@ -152,15 +173,19 @@ class TicketsController extends Controller
 
         $customers  = Customer::all()->pluck('company_name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
+        $products   = Product::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+
+        $serialnumbers   = SerialNumber::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+
         $assigned_to_users = User::whereHas('roles', function($query) {
-                $query->whereId(2);
+                $query->where('id', '!=', 2);
             })
             ->pluck('name', 'id')
             ->prepend(trans('global.pleaseSelect'), '');
 
         $ticket->load('status', 'priority', 'category', 'assigned_to_user','customer');
 
-        return view('admin.tickets.edit', compact('statuses', 'priorities', 'categories', 'assigned_to_users', 'ticket','customers'));
+        return view('admin.tickets.edit', compact('statuses', 'priorities', 'categories', 'assigned_to_users', 'ticket','customers','products','serialnumbers'));
     }
 
     public function update(UpdateTicketRequest $request, Ticket $ticket)

@@ -1,47 +1,35 @@
 @extends('layouts.admin')
 @section('content')
-@can('customer_create')
+@can('serial_number_create')
     <div style="margin-bottom: 10px;" class="row">
         <div class="col-lg-12">
-            <a class="btn btn-success" href="{{ route("admin.customers.create") }}">
-                {{ trans('global.add') }} {{ trans('cruds.customer.title_singular') }}
+            <a class="btn btn-success" href="{{ route("admin.serialnumbers.create") }}">
+                {{ trans('global.add') }} {{ trans('cruds.serialnumber.title_singular') }}
             </a>
         </div>
     </div>
 @endcan
 <div class="card">
     <div class="card-header">
-        {{ trans('cruds.customer.title_singular') }} {{ trans('global.list') }}
+        {{ trans('cruds.serialnumber.title_singular') }} {{ trans('global.list') }}
     </div>
 
     <div class="card-body">
         <div class="table-responsive">
-            <table class=" table table-bordered table-striped table-hover datatable datatable-User">
+            <table class=" table table-bordered table-striped table-hover datatable datatable-Category">
                 <thead>
                     <tr>
                         <th width="10">
 
                         </th>
                         <th>
-                            {{ trans('cruds.customer.fields.id') }}
+                            {{ trans('cruds.serialnumber.fields.id') }}
                         </th>
                         <th>
-                            {{ trans('cruds.customer.fields.name') }}
+                            {{ trans('cruds.serialnumber.fields.name') }}
                         </th>
                         <th>
-                            {{ trans('cruds.customer.fields.country') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.customer.fields.phone') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.customer.fields.email') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.customer.fields.contactperson') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.customer.fields.contactpersonemail') }}
+                            {{ trans('cruds.serialnumber.fields.description') }}
                         </th>
                         <th>
                             &nbsp;
@@ -49,47 +37,35 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($customers as $key => $customer)
-                        <tr data-entry-id="{{ $customer->id }}">
+                    @foreach($serialnumbers as $key => $serialnumber)
+                        <tr data-entry-id="{{ $serialnumber->id }}">
                             <td>
 
                             </td>
                             <td>
-                                {{ $customer->id ?? '' }}
+                                {{ $serialnumber->id ?? '' }}
                             </td>
                             <td>
-                                {{ $customer->company_name ?? '' }}
+                                {{ $serialnumber->name ?? '' }}
                             </td>
                             <td>
-                                {{ $customer->country ?? '' }}
+                                {{ $serialnumber->description ?? '' }}
                             </td>
                             <td>
-                                {{ $customer->phone ?? '' }}
-                            </td>
-                            <td>
-                                {{ $customer->email ?? '' }}
-                            </td>
-                            <td>
-                                {{ $customer->contact_person ?? '' }}
-                            </td>
-                            <td>
-                                {{ $customer->email_contact_person ?? '' }}
-                            </td>
-                            <td>
-                                @can('user_show')
-                                    <a class="btn btn-xs btn-primary" href="{{ route('admin.customers.show', $customer->id) }}">
+                                @can('serial_number_show')
+                                    <a class="btn btn-xs btn-primary" href="{{ route('admin.serialnumbers.show', $serialnumber->id) }}">
                                         {{ trans('global.view') }}
                                     </a>
                                 @endcan
 
-                                @can('user_edit')
-                                    <a class="btn btn-xs btn-info" href="{{ route('admin.customers.edit', $customer->id) }}">
+                                @can('serial_number_edit')
+                                    <a class="btn btn-xs btn-info" href="{{ route('admin.serialnumbers.edit', $serialnumber->id) }}">
                                         {{ trans('global.edit') }}
                                     </a>
                                 @endcan
 
-                                @can('user_delete')
-                                    <form action="{{ route('admin.customers.destroy', $customer->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+                                @can('serial_number_delete')
+                                    <form action="{{ route('admin.serialnumbers.destroy', $serialnumber->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
                                         <input type="hidden" name="_method" value="DELETE">
                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                         <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
@@ -113,11 +89,11 @@
 <script>
     $(function () {
   let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
-@can('user_delete')
+@can('serial_number_delete')
   let deleteButtonTrans = '{{ trans('global.datatables.delete') }}'
   let deleteButton = {
     text: deleteButtonTrans,
-    url: "{{ route('admin.customers.massDestroy') }}",
+    url: "{{ route('admin.serialnumbers.massDestroy') }}",
     className: 'btn-danger',
     action: function (e, dt, node, config) {
       var ids = $.map(dt.rows({ selected: true }).nodes(), function (entry) {
@@ -147,7 +123,7 @@
     order: [[ 1, 'desc' ]],
     pageLength: 100,
   });
-  $('.datatable-User:not(.ajaxTable)').DataTable({ buttons: dtButtons })
+  $('.datatable-Category:not(.ajaxTable)').DataTable({ buttons: dtButtons })
     $('a[data-toggle="tab"]').on('shown.bs.tab', function(e){
         $($.fn.dataTable.tables(true)).DataTable()
             .columns.adjust();

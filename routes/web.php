@@ -57,4 +57,12 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     // Customer
     Route::delete('customers/destroy', 'CustomerController@massDestroy')->name('customers.massDestroy');
     Route::resource('customers', 'CustomerController');
+
+    //Products
+    Route::delete('products/destroy', 'ProductController@massDestroy')->name('products.massDestroy');
+    Route::resource('products', 'ProductController');
+
+    //Serial Number
+    Route::delete('serialnumbers/destroy', 'SerialNumberController@massDestroy')->name('serialnumbers.massDestroy');
+    Route::resource('serialnumbers', 'SerialNumberController');
 });

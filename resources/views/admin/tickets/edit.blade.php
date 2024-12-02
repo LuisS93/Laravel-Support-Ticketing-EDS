@@ -48,6 +48,32 @@
                     {{ trans('cruds.ticket.fields.attachments_helper') }}
                 </p>
             </div>
+            <div class="form-group {{ $errors->has('product_id') ? 'has-error' : '' }}">
+                <label for="product">{{ trans('cruds.ticket.fields.product') }}</label>
+                <select name="product_id" id="product" class="form-control select2">
+                    @foreach($products as $id => $product)
+                        <option value="{{ $id }}" {{ (isset($ticket) && $ticket->product ? $ticket->product->id : old('product_id')) == $id ? 'selected' : '' }}>{{ $product }}</option>
+                    @endforeach
+                </select>
+                @if($errors->has('product_id'))
+                    <em class="invalid-feedback">
+                        {{ $errors->first('product_id') }}
+                    </em>
+                @endif
+            </div>
+            <div class="form-group {{ $errors->has('serial_number_id') ? 'has-error' : '' }}">
+                <label for="serialnumber">{{ trans('cruds.ticket.fields.serialnumber') }}</label>
+                <select name="serial_number_id" id="serialnumber" class="form-control select2">
+                    @foreach($serialnumbers as $id => $serialnumber)
+                        <option value="{{ $id }}" {{ (isset($ticket) && $ticket->serialnumber ? $ticket->serialnumber->id : old('serial_number_id')) == $id ? 'selected' : '' }}>{{ $serialnumber }}</option>
+                    @endforeach
+                </select>
+                @if($errors->has('serial_number_id'))
+                    <em class="invalid-feedback">
+                        {{ $errors->first('serial_number_id') }}
+                    </em>
+                @endif
+            </div>
             <div class="form-group {{ $errors->has('customer_id') ? 'has-error' : '' }}">
                 <label for="customer">{{ trans('cruds.ticket.fields.customer') }}</label>
                 <select name="customer_id" id="customer" class="form-control select2">

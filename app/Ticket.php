@@ -41,6 +41,8 @@ class Ticket extends Model implements HasMedia
         'author_email',
         'assigned_to_user_id',
         'customer_id',
+        'product_id',
+        'serial_number_id',
     ];
 
     public static function boot()
@@ -87,6 +89,16 @@ class Ticket extends Model implements HasMedia
         return $this->belongsTo(Customer::class, 'customer_id');
     }
 
+    public function product()
+    {
+        return $this->belongsTo(Product::class, 'product_id');
+    }
+
+    public function serialnumber()
+    {
+        return $this->belongsTo(SerialNumber::class, 'serial_number_id');
+    }
+
     public function assigned_to_user()
     {
         return $this->belongsTo(User::class, 'assigned_to_user_id');
@@ -107,6 +119,21 @@ class Ticket extends Model implements HasMedia
             ->when(request()->input('status'), function($query) {
                 $query->whereHas('status', function($query) {
                     $query->whereId(request()->input('status'));
+                });
+            })
+            ->when(request()->input('product'), function($query) {
+                $query->whereHas('product', function($query) {
+                    $query->whereId(request()->input('product'));
+                });
+            })
+            ->when(request()->input('customer'), function($query) {
+                $query->whereHas('customer', function($query) {
+                    $query->whereId(request()->input('customer'));
+                });
+            })
+            ->when(request()->input('serialnumber'), function($query) {
+                $query->whereHas('serialnumber', function($query) {
+                    $query->whereId(request()->input('serialnumber'));
                 });
             });
     }

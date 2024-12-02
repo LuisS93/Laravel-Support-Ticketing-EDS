@@ -40,6 +40,12 @@
                         {{ trans('cruds.ticket.fields.author_name') }}
                     </th>
                     <th>
+                        {{ trans('cruds.ticket.fields.product') }}
+                    </th>
+                    <th>
+                        {{ trans('cruds.ticket.fields.serialnumber') }}
+                    </th>
+                    <th>
                         {{ trans('cruds.ticket.fields.customer') }}
                     </th>
                     <th>
@@ -83,6 +89,30 @@ let filters = `
       <option value="">All categories</option>
       @foreach($categories as $category)
         <option value="{{ $category->id }}"{{ request('category') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
+      @endforeach
+    </select>
+  </div>
+  <div class="form-group mx-sm-3 mb-2">
+    <select class="form-control" name="product">
+      <option value="">All Products</option>
+      @foreach($products as $product)
+        <option value="{{ $product->id }}"{{ request('product') == $product->id ? 'selected' : '' }}>{{ $product->name }}</option>
+      @endforeach
+    </select>
+  </div>
+  <div class="form-group mx-sm-3 mb-2">
+    <select class="form-control" name="serialnumber">
+      <option value="">All Serial Numbers</option>
+      @foreach($serialnumbers as $serialnumber)
+        <option value="{{ $serialnumber->id }}"{{ request('serialnumber') == $serialnumber->id ? 'selected' : '' }}>{{ $serialnumber->name }}</option>
+      @endforeach
+    </select>
+  </div>
+  <div class="form-group mx-sm-3 mb-2">
+    <select class="form-control" name="customer">
+      <option value="">All Customers</option>
+      @foreach($customers as $customer)
+        <option value="{{ $customer->id }}"{{ request('customer') == $customer->id ? 'selected' : '' }}>{{ $customer->company_name }}</option>
       @endforeach
     </select>
   </div>
@@ -132,7 +162,10 @@ $('.card-body').on('change', 'select', function() {
       data: {
         'status': searchParams.get('status'),
         'priority': searchParams.get('priority'),
-        'category': searchParams.get('category')
+        'category': searchParams.get('category'),
+        'product': searchParams.get('product'),
+        'customer': searchParams.get('customer'),
+        'serialnumber': searchParams.get('serialnumber')
       }
     },
     columns: [
@@ -167,6 +200,8 @@ $('.card-body').on('change', 'select', function() {
   } 
 },
 { data: 'author_name', name: 'author_name' },
+{ data: 'product', name: 'product' },
+{ data: 'serialnumber', name: 'serialnumber' },
 { data: 'customer', name: 'customer' },
 { data: 'assigned_to_user_name', name: 'assigned_to_user.name' },
 { data: 'actions', name: '{{ trans('global.actions') }}' }

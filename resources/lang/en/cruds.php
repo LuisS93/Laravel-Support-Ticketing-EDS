@@ -152,6 +152,8 @@ return [
             'attachments'             => 'Attachments',
             'attachments_helper'      => '',
             'customer'                => 'Customer',
+            'product'                 => 'Product',
+            'serialnumber'            => 'Serial Number',
         ],
     ],
     'comment'        => [
@@ -244,5 +246,42 @@ return [
             'contactpersonemail_helper' => '',
             'contactpersonphone'       => 'Contact Person Phone',
         ],
+    ],
+    'product'       => [
+        'title'          => 'Products',
+        'title_singular' => 'Product',
+        'fields'         => [
+            'id'                 => 'ID',
+            'id_helper'          => '',
+            'name'               => 'Name',
+            'name_helper'        => '',
+            'description'        => 'Description',
+            'description_helper' => '',
+            'created_at'         => 'Created at',
+            'created_at_helper'  => '',
+            'updated_at'         => 'Updated at',
+            'updated_at_helper'  => '',
+            'deleted_at'         => 'Deleted at',
+            'deleted_at_helper'  => '',
+        ],
+    ],
+    'serialnumber'       => [
+        'title'          => 'Serial Numbers',
+        'title_singular' => 'Serial Number',
+        'fields'         => [
+            'id'                 => 'ID',
+            'id_helper'          => '',
+            'name'               => 'Name',
+            'name_helper'        => '',
+            'description'        => 'Description',
+            'description_helper' => '',
+            'created_at'         => 'Created at',
+            'created_at_helper'  => '',
+            'updated_at'         => 'Updated at',
+            'updated_at_helper'  => '',
+            'deleted_at'         => 'Deleted at',
+            'deleted_at_helper'  => '',
+        ]
     ]
 ];
+

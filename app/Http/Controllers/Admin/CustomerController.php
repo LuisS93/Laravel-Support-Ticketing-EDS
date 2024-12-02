@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use \App\Http\Requests\StoreCustomerRequest;
+use \App\Http\Requests\MassDestroyCustomerRequest;
 use \App\Http\Requests\UpdateCustomerRequest;
 use Gate;
 use Symfony\Component\HttpFoundation\Response;
@@ -69,189 +70,11 @@ class CustomerController extends Controller
         return back();
     }
 
-    public function massDestroy(MassDestroyUserRequest $request)
+    public function massDestroy(MassDestroyCustomerRequest $request)
     {
         Customer::whereIn('id', request('ids'))->delete();
 
         return response(null, Response::HTTP_NO_CONTENT);
     }
-    /*
-    public function insert(Request $request)
-    {
-        $errormsg ="";
-        $flgerror = false;
-
-        if(!$request->has('company_name') || $request->company_name == null || $request->company_name == ''){
-            $flgerror = true;
-            $errormsg = $errormsg."Campo 'company_name' non compilato  ";
-        }
-        
-        if($flgerror == true){
-            return response()->json(
-                    [
-                        'Response'=>[
-
-                         ],
-                        "Status" => [
-                            "ReturnStatus" => "KO",
-                            "StatusMessage" => "Si sono verificati i seguenti errori: ".$errormsg
-                        ]
-                    ], 200);
-        }
-        try{
-            $tmpuserU=Customer::where('company_name',$request->company_name)->first();
-            if($tmpuserU!=NULL)
-            {
-                return response()->json(
-                    [
-
-                        "Status" => [
-                            "ReturnStatus" => "KO",
-                            "StatusMessage" => "Impossibile inserire cliente, cliente presente in Db"
-                        ]
-                    ], 200);
-
-            }
-            else
-            {
-                $user = Customer::create([
-                            "company_name"              => $request->company_name,
-                            "address"                   => $request->address,
-                            "city"                      => $request->city,
-                            "country"                   => $request->country,
-                            "zip"                       => $request->zip,
-                            "phone"                     => $request->phone,
-                            "email"                     => $request->email,
-                            "contact_person"            => $request->contact_person,
-                            "phone_contact_person"      => $request->phone_contact_person,
-                            'email_contact_person'      => $request->email_contact_person
-                           
-                    ]);
-
-                return response()->json(
-                    [
-                        "Response" => [
-                            "company_name"              => $request->company_name,
-                            "address"                   => $request->address,
-                            "city"                      => $request->city,
-                            "country"                   => $request->country,
-                            "zip"                       => $request->zip,
-                            "phone"                     => $request->phone,
-                            "email"                     => $request->email,
-                            "contact_person"            => $request->contact_person,
-                            "phone_contact_person"      => $request->phone_contact_person,
-                            'email_contact_person'      => $request->email_contact_person
-                        ],
-                        "Status" => [
-                            "ReturnStatus" => "OK",
-                            "StatusMessage" => "Operazione riuscita."
-                        ]
-                    ], 200);
-
-            }
-
-        }
-        catch(\Exception $e)
-        {
-            return response()->json(
-                [
-                    'Response'=>[
-
-                     ],
-                    "Status" => [
-                        "ReturnStatus" => "KO",
-                        "StatusMessage" => "Errore - Exception: ".$e
-                    ]
-                ], 200);
-
-        }
-
-
-    }
-
-    public function update(Request $request, Customer $customer)
-    {
-        try
-        {
-            if (Customer::where('id', $customer->id)->exists())
-            {
-                return response()->json(
-                    [
-                        "Response" => [
-                            "company_name"              => $request->company_name,
-                            "address"                   => $request->address,
-                            "city"                      => $request->city,
-                            "country"                   => $request->country,
-                            "zip"                       => $request->zip,
-                            "phone"                     => $request->phone,
-                            "email"                     => $request->email,
-                            "contact_person"            => $request->contact_person,
-                            "phone_contact_person"      => $request->phone_contact_person,
-                            'email_contact_person'      => $request->email_contact_person
-                        ],
-                        "Status" => [
-                            "ReturnStatus" => "KO",
-                            "StatusMessage" => "Impossibile modificare cliente, cliente non presente in Db"
-                        ]
-                    ], 200);
-
-            }
-            else
-            {
-                $customer->update([
-                            "company_name"              => $request->company_name,
-                            "address"                   => $request->address,
-                            "city"                      => $request->city,
-                            "country"                   => $request->country,
-                            "zip"                       => $request->zip,
-                            "phone"                     => $request->phone,
-                            "email"                     => $request->email,
-                            "contact_person"            => $request->contact_person,
-                            "phone_contact_person"      => $request->phone_contact_person,
-                            'email_contact_person'      => $request->email_contact_person
-                           
-                    ]);
-
-                return response()->json(
-                    [
-                        "Response" => [
-                            "company_name"              => $request->company_name,
-                            "address"                   => $request->address,
-                            "city"                      => $request->city,
-                            "country"                   => $request->country,
-                            "zip"                       => $request->zip,
-                            "phone"                     => $request->phone,
-                            "email"                     => $request->email,
-                            "contact_person"            => $request->contact_person,
-                            "phone_contact_person"      => $request->phone_contact_person,
-                            'email_contact_person'      => $request->email_contact_person
-                        ],
-                        "Status" => [
-                            "ReturnStatus" => "OK",
-                            "StatusMessage" => "Operazione riuscita."
-                        ]
-                    ], 200);
-
-            }
-
-        }
-        catch(\Exception $e)
-        {
-            return response()->json(
-                [
-                    'Response'=>[
-
-                     ],
-                    "Status" => [
-                        "ReturnStatus" => "KO",
-                        "StatusMessage" => "Errore - Exception: ".$e
-                    ]
-                ], 200);
-
-        }
-
-
-    }
     
-    */
 }

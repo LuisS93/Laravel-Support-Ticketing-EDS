@@ -59,6 +59,22 @@
                     </tr>
                     <tr>
                         <th>
+                            {{ trans('cruds.ticket.fields.product') }}
+                        </th>
+                        <td>
+                            {{ $ticket->product->name ?? '' }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.ticket.fields.serialnumber') }}
+                        </th>
+                        <td>
+                            {{ $ticket->serialnumber->name ?? '' }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
                             {{ trans('cruds.ticket.fields.customer') }}
                         </th>
                         <td>

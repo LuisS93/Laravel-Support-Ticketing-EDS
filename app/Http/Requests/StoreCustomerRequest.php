@@ -50,7 +50,7 @@ class StoreCustomerRequest extends FormRequest
                 'max:50',               // Massimo 50 caratteri
             ],
             'email'                => [
-                'required',             // Campo obbligatorio
+                'nullable',             // Campo obbligatorio
                 'email',                // Deve essere un'email valida
                 'max:80',               // Massimo 80 caratteri
                 'unique:customer,email', // Deve essere univoco nella tabella customers

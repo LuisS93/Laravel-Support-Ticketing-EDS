@@ -74,7 +74,25 @@
                     </a>
                 </li>
             @endcan
-            <!--@can('status_access')-->
+            @can('serial_number_access')
+                <li class="nav-item">
+                    <a href="{{ route("admin.serialnumbers.index") }}" class="nav-link {{ request()->is('admin/serialnumbers') || request()->is('admin/serialnumbers/*') ? 'active' : '' }}">
+                        <i class="fa-fw fas fa-barcode nav-icon">
+                        </i>
+                        {{ trans('cruds.serialnumber.title') }}
+                    </a>
+                </li>
+            @endcan
+            @can('product_access')
+                <li class="nav-item">
+                    <a href="{{ route("admin.products.index") }}" class="nav-link {{ request()->is('admin/products') || request()->is('admin/products/*') ? 'active' : '' }}">
+                        <i class="fa-fw fas fa-box nav-icon">
+                        </i>
+                        {{ trans('cruds.product.title') }}
+                    </a>
+                </li>
+             @endcan
+            @can('customer_access')
                 <li class="nav-item">
                     <a href="{{ route("admin.customers.index") }}" class="nav-link {{ request()->is('admin/customers') || request()->is('admin/customers/*') ? 'active' : '' }}">
                         <i class="fa-fw fas fa-user-tie nav-icon">
@@ -82,7 +100,7 @@
                         {{ trans('cruds.customer.title') }}
                     </a>
                 </li>
-             <!--@endcan-->
+             @endcan
             @can('priority_access')
                 <li class="nav-item">
                     <a href="{{ route("admin.priorities.index") }}" class="nav-link {{ request()->is('admin/priorities') || request()->is('admin/priorities/*') ? 'active' : '' }}">
