@@ -154,6 +154,7 @@ return [
             'customer'                => 'Customer',
             'product'                 => 'Product',
             'serialnumber'            => 'Serial Number',
+            'invoiced'                => 'Invoiced',
         ],
     ],
     'comment'        => [

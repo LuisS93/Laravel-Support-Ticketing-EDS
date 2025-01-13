@@ -96,6 +96,11 @@ class TicketsController extends Controller
                 return $row->serialnumber ? $row->serialnumber->name : ""; 
             });
 
+            // Aggiungi la colonna fatturato
+            $table->addColumn('invoiced', function ($row) {
+                return $row->invoiced==0 ? "NO" : "YES"; 
+            });
+
             $table->addColumn('assigned_to_user_name', function ($row) {
                 return $row->assigned_to_user ? $row->assigned_to_user->name : '';
             });
@@ -113,11 +118,11 @@ class TicketsController extends Controller
             return $table->make(true);
         }
 
-        $priorities = Priority::all();
-        $statuses = Status::all();
-        $categories = Category::all();
-        $customers  = Customer::all();
-        $products = Product::all();
+        $priorities    = Priority::all();
+        $statuses      = Status::all();
+        $categories    = Category::all();
+        $customers     = Customer::all();
+        $products      = Product::all();
         $serialnumbers = SerialNumber::all();
 
         return view('admin.tickets.index', compact('priorities', 'statuses', 'categories','products','customers','serialnumbers'));
@@ -208,6 +213,10 @@ class TicketsController extends Controller
             }
         }
 
+        //if ticket's status is closed, send email to customer
+
+        //if ticket's status is COMPLETED, send email to Invoices team
+
         return redirect()->route('admin.tickets.index');
     }
 
@@ -246,7 +255,9 @@ class TicketsController extends Controller
             'author_name'   => $user->name,
             'author_email'  => $user->email,
             'user_id'       => $user->id,
-            'comment_text'  => $request->comment_text
+            'comment_text'  => $request->comment_text,
+            'spare_parts_text'  => $request->spare_parts_text,
+            'hours_spent'       => $request->hours_spent,
         ]);
 
         $ticket->sendCommentNotification($comment);

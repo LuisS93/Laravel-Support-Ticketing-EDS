@@ -72,9 +72,11 @@ class TicketController extends Controller
         ]);
 
         $comment = $ticket->comments()->create([
-            'author_name'   => $ticket->author_name,
-            'author_email'  => $ticket->author_email,
-            'comment_text'  => $request->comment_text
+            'author_name'       => $ticket->author_name,
+            'author_email'      => $ticket->author_email,
+            'comment_text'      => $request->comment_text,            
+            'spare_parts_text'  => $request->spare_parts_text,
+            'hours_spent'       => $request->hours_spent,
         ]);
 
         $ticket->sendCommentNotification($comment);

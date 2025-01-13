@@ -26,6 +26,8 @@ class Comment extends Model
         'author_name',
         'author_email',
         'comment_text',
+        'hours_spent',
+        'spare_parts_text',
     ];
 
     public function ticket()

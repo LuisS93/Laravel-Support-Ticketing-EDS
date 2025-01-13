@@ -136,9 +136,17 @@
                         <td>
                             @forelse ($ticket->comments as $comment)
                                 <div class="row">
-                                    <div class="col">
+                                    <div class="col-lg-5 col-sm-4">
                                         <p class="font-weight-bold"><a href="mailto:{{ $comment->author_email }}">{{ $comment->author_name }}</a> ({{ $comment->created_at }})</p>
                                         <p>{{ $comment->comment_text }}</p>
+                                    </div>
+                                    <div class="col-lg-2 col-sm-4">
+                                        <p class="font-weight-bold text-center">Hours Spent</p>
+                                        <p class="text-center">{{ $comment->hours_spent }}</p>
+                                    </div>
+                                    <div class="col-lg-5 col-sm-4">
+                                        <p class="font-weight-bold">Spare Parts</p>
+                                        <p>{{ $comment->spare_parts_text }}</p>
                                     </div>
                                 </div>
                                 <hr />
@@ -153,6 +161,16 @@
                             <form action="{{ route('admin.tickets.storeComment', $ticket->id) }}" method="POST">
                                 @csrf
                                 <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-lg-2 col-sm-4">
+                                            <label for="hours_spent">Hours Spent</label>
+                                            <input class="form-control text-right" type="time" name="hours_spent" id="hours_spent" placeholder="Hours Spent">
+                                        </div>
+                                        <div class="col-lg col-sm-4">
+                                            <label for="spare_parts_text">Spare Parts</label>
+                                            <textarea class="form-control" id="spare_parts_text" name="spare_parts_text" rows="3"></textarea>
+                                        </div>
+                                    </div>
                                     <label for="comment_text">Leave a comment</label>
                                     <textarea class="form-control" id="comment_text" name="comment_text" rows="3" required></textarea>
                                 </div>

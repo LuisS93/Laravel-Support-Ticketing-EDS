@@ -43,6 +43,7 @@ class Ticket extends Model implements HasMedia
         'customer_id',
         'product_id',
         'serial_number_id',
+        'invoiced',
     ];
 
     public static function boot()

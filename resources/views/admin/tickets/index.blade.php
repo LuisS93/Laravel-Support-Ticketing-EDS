@@ -52,6 +52,9 @@
                         {{ trans('cruds.ticket.fields.assigned_to_user') }}
                     </th>
                     <th>
+                        {{ trans('cruds.ticket.fields.invoiced') }}
+                    </th>
+                    <th>
                         &nbsp;
                     </th>
                 </tr>
@@ -169,48 +172,49 @@ $('.card-body').on('change', 'select', function() {
       }
     },
     columns: [
-      { data: 'placeholder', name: 'placeholder' },
-{ data: 'id', name: 'id' },
-{
-    data: 'title',
-    name: 'title', 
-    render: function ( data, type, row) {
-        return '<a href="'+row.view_link+'">'+data+' ('+row.comments_count+')</a>';
-    }
-},
-{ 
-  data: 'status_name', 
-  name: 'status.name', 
-  render: function ( data, type, row) {
-      return '<span style="color:'+row.status_color+'">'+data+'</span>';
-  }
-},
-{ 
-  data: 'priority_name', 
-  name: 'priority.name', 
-  render: function ( data, type, row) {
-      return '<span style="color:'+row.priority_color+'">'+data+'</span>';
-  }
-},
-{ 
-  data: 'category_name', 
-  name: 'category.name', 
-  render: function ( data, type, row) {
-      return '<span style="color:'+row.category_color+'">'+data+'</span>';
-  } 
-},
-{ data: 'author_name', name: 'author_name' },
-{ data: 'product', name: 'product' },
-{ data: 'serialnumber', name: 'serialnumber' },
-{ data: 'customer', name: 'customer' },
-{ data: 'assigned_to_user_name', name: 'assigned_to_user.name' },
-{ data: 'actions', name: '{{ trans('global.actions') }}' }
-    ],
-    order: [[ 1, 'desc' ]],
-    pageLength: 100,
-  };    
-$(".datatable-Ticket").one("preInit.dt", function () {
- $(".dataTables_filter").after(filters);
+                  { data: 'placeholder', name: 'placeholder' },
+                  { data: 'id', name: 'id' },
+                  {
+                      data: 'title',
+                      name: 'title', 
+                      render: function ( data, type, row) {
+                          return '<a href="'+row.view_link+'">'+data+' ('+row.comments_count+')</a>';
+                      }
+                  },
+                  { 
+                    data: 'status_name', 
+                    name: 'status.name', 
+                    render: function ( data, type, row) {
+                        return '<span style="color:'+row.status_color+'">'+data+'</span>';
+                    }
+                  },
+                  { 
+                    data: 'priority_name', 
+                    name: 'priority.name', 
+                    render: function ( data, type, row) {
+                        return '<span style="color:'+row.priority_color+'">'+data+'</span>';
+                    }
+                  },
+                  { 
+                    data: 'category_name', 
+                    name: 'category.name', 
+                    render: function ( data, type, row) {
+                        return '<span style="color:'+row.category_color+'">'+data+'</span>';
+                    } 
+                  },
+                  { data: 'author_name', name: 'author_name' },
+                  { data: 'product', name: 'product' },
+                  { data: 'serialnumber', name: 'serialnumber' },
+                  { data: 'customer', name: 'customer' },
+                  { data: 'assigned_to_user_name', name: 'assigned_to_user.name' },
+                  { data: 'invoiced', name: 'invoiced' },
+                  { data: 'actions', name: '{{ trans('global.actions') }}' }
+            ],
+          order: [[ 1, 'desc' ]],
+          pageLength: 100,
+        };    
+    $(".datatable-Ticket").one("preInit.dt", function () {
+    $(".dataTables_filter").after(filters);
 });
   $('.datatable-Ticket').DataTable(dtOverrideGlobals);
     $('a[data-toggle="tab"]').on('shown.bs.tab', function(e){
