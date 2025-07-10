@@ -96,9 +96,9 @@ class TicketsController extends Controller
                 return $row->serialnumber ? $row->serialnumber->name : ""; 
             });
 
-            // Aggiungi la colonna fatturato
-            $table->addColumn('invoiced', function ($row) {
-                return $row->invoiced==0 ? "NO" : "YES"; 
+            // Aggiungi la colonna data scadenza
+            $table->addColumn('expire_date', function ($row) {
+                return $row->expire_date ? $row->expire_date->format('d/m/Y') : "";
             });
 
             $table->addColumn('assigned_to_user_name', function ($row) {
@@ -225,8 +225,16 @@ class TicketsController extends Controller
         abort_if(Gate::denies('ticket_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $ticket->load('status', 'priority', 'category', 'assigned_to_user', 'comments');
-
-        return view('admin.tickets.show', compact('ticket'));
+        $statuses = Status::where('name', '!=', '99 - To be closed due to no customer feedback')
+                            ->pluck('name', 'id');
+        /**VERSIONE PIU RISTRETTA A LIVELLO DI SCELTA DI STATUS */
+        /*
+        $statuses = Status::where('name', '!=', '8 - Invoiced')
+                            ->where('name', '!=', '99 - To be closed due to no customer feedback')
+                            ->where('name', '!=', '6 - Closed')
+                            ->pluck('name', 'id');
+        */
+        return view('admin.tickets.show', compact('ticket','statuses'));
     }
 
     public function destroy(Ticket $ticket)
@@ -252,13 +260,19 @@ class TicketsController extends Controller
         ]);
         $user = auth()->user();
         $comment = $ticket->comments()->create([
-            'author_name'   => $user->name,
-            'author_email'  => $user->email,
-            'user_id'       => $user->id,
-            'comment_text'  => $request->comment_text,
+            'author_name'       => $user->name,
+            'author_email'      => $user->email,
+            'user_id'           => $user->id,
+            'comment_text'      => $request->comment_text,
             'spare_parts_text'  => $request->spare_parts_text,
             'hours_spent'       => $request->hours_spent,
         ]);
+
+        //INSERISCO CAMBIO STATUS
+        if($request->status_id!==null && $request->status_id != $ticket->status_id) {
+            $ticket->status_id = $request->status_id;
+            $ticket->save();
+        }
 
         $ticket->sendCommentNotification($comment);
 

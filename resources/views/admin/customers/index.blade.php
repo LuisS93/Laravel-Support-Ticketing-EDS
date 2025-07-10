@@ -76,19 +76,19 @@
                                 {{ $customer->email_contact_person ?? '' }}
                             </td>
                             <td>
-                                @can('user_show')
+                                @can('customer_show')
                                     <a class="btn btn-xs btn-primary" href="{{ route('admin.customers.show', $customer->id) }}">
                                         {{ trans('global.view') }}
                                     </a>
                                 @endcan
 
-                                @can('user_edit')
+                                @can('customer_edit')
                                     <a class="btn btn-xs btn-info" href="{{ route('admin.customers.edit', $customer->id) }}">
                                         {{ trans('global.edit') }}
                                     </a>
                                 @endcan
 
-                                @can('user_delete')
+                                @can('customer_delete')
                                     <form action="{{ route('admin.customers.destroy', $customer->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
                                         <input type="hidden" name="_method" value="DELETE">
                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">

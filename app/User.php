@@ -81,4 +81,8 @@ class User extends Authenticatable
     {
         return $this->roles->contains(1);
     }
+    public function isTicketSupervisor()
+    {
+        return $this->roles->contains(6);
+    }
 }

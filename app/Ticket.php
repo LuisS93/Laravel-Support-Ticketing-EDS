@@ -26,6 +26,7 @@ class Ticket extends Model implements HasMedia
         'created_at',
         'updated_at',
         'deleted_at',
+        'expire_date'
     ];
 
     protected $fillable = [
@@ -44,6 +45,8 @@ class Ticket extends Model implements HasMedia
         'product_id',
         'serial_number_id',
         'invoiced',
+        'expire_date',
+        'reminder_days'
     ];
 
     public static function boot()

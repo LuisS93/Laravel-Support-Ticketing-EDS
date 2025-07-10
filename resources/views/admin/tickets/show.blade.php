@@ -4,6 +4,9 @@
 <div class="card">
     <div class="card-header">
         {{ trans('global.show') }} {{ trans('cruds.ticket.title') }}
+        <a class="btn btn-dark my-2" href="{{ route('admin.tickets.index') }}" style="float: inline-end;">
+            {{ trans('global.back_to_list') }}
+        </a>
     </div>
 
     <div class="card-body">
@@ -131,6 +134,27 @@
                     </tr>
                     <tr>
                         <th>
+                            {{ trans('cruds.ticket.fields.expire_date') }}
+                        </th>
+                        <td>
+                            {{ $ticket->expire_date ? $ticket->expire_date->format('d/m/Y') : '' }}
+                            @if (
+                                $ticket->expire_date &&
+                                now()->gt($ticket->expire_date) &&
+                                !in_array($ticket->status->name, [
+                                    '5 - Completed',
+                                    '6 - Closed',
+                                    '7 - Rejected',
+                                    '8 - Invoiced',
+                                    '99 - To be closed due to no customer feedback'
+                                ])
+                            )
+                                <strong style="color: red;"> - EXPIRE</strong>
+                            @endif
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
                             {{ trans('cruds.ticket.fields.comments') }}
                         </th>
                         <td>
@@ -161,6 +185,23 @@
                             <form action="{{ route('admin.tickets.storeComment', $ticket->id) }}" method="POST">
                                 @csrf
                                 <div class="form-group">
+                                    @if($ticket->status->name!== '6 - Closed')
+                                        <div class="row">
+                                            <div class="col-lg-2 col-sm-4">
+                                                <label for="hours_spent">Change Status</label>
+                                                <select name="status_id" id="status" class="form-control select2" required>
+                                                @foreach($statuses as $id => $status)
+                                                    <option value="{{ $id }}" {{ (isset($ticket) && $ticket->status ? $ticket->status->id : old('status_id')) == $id ? 'selected' : '' }}>
+                                                            {{ $status }}
+                                                    </option>
+                                                @endforeach
+                                                </select>
+                                            </div>
+                                            <div class="col-lg col-sm-4">
+                                            </div>
+                                        </div>
+                                    @endif
+                                    
                                     <div class="row">
                                         <div class="col-lg-2 col-sm-4">
                                             <label for="hours_spent">Hours Spent</label>

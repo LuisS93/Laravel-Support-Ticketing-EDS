@@ -52,7 +52,7 @@
                         {{ trans('cruds.ticket.fields.assigned_to_user') }}
                     </th>
                     <th>
-                        {{ trans('cruds.ticket.fields.invoiced') }}
+                        {{ trans('cruds.ticket.fields.expire_date') }}
                     </th>
                     <th>
                         &nbsp;
@@ -207,7 +207,7 @@ $('.card-body').on('change', 'select', function() {
                   { data: 'serialnumber', name: 'serialnumber' },
                   { data: 'customer', name: 'customer' },
                   { data: 'assigned_to_user_name', name: 'assigned_to_user.name' },
-                  { data: 'invoiced', name: 'invoiced' },
+                  { data: 'expire_date', name: 'expire_date' },
                   { data: 'actions', name: '{{ trans('global.actions') }}' }
             ],
           order: [[ 1, 'desc' ]],

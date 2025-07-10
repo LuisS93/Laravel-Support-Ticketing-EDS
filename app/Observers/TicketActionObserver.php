@@ -19,6 +19,12 @@ class TicketActionObserver
             return $q->where('title', 'Admin');
         })->get();
         Notification::send($users, new DataChangeEmailNotification($data));
+        //send notification to user whom the ticket is assigned
+        $user = $model->assigned_to_user;
+        if($user)
+        {
+            Notification::send($user, new AssignedTicketNotification($model));
+        }
     }
 
     public function updated(Ticket $model)
@@ -55,6 +61,21 @@ class TicketActionObserver
                 Notification::send($users, new CancelInvoiceEmailNotification($data));
                 return ;
             }
+            if ($status === '6 - Closed')
+            {
+                $data = [
+                    'action'     => 'Chiusura Ticket '.$idTicket,
+                    'model_name' => 'Ticket',
+                    'ticket'     => $model,
+                    'customer'   => $customer,
+                    'bodymail'   => "Il ticket chiuso in data ".date('d/m/Y')
+                ];
+                
+                Notification::route('mail', 'service@eds-srl.it')
+                            ->notify(new TicketToBeInvoicedEmailNotification($data));
+                return ;
+            }
+
             $comments = Comment::where('ticket_id', $idTicket)
                                 ->whereNull('deleted_at')
                                 ->where(function ($query) {

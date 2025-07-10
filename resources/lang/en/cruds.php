@@ -155,6 +155,8 @@ return [
             'product'                 => 'Product',
             'serialnumber'            => 'Serial Number',
             'invoiced'                => 'Invoiced',
+            'expire_date'             => 'Expire Date',
+            'reminder_days'           => 'Reminder Days',
         ],
     ],
     'comment'        => [

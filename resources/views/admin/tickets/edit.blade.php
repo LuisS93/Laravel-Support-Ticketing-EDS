@@ -150,7 +150,7 @@
                     {{ trans('cruds.ticket.fields.author_email_helper') }}
                 </p>
             </div>
-            @if(auth()->user()->isAdmin())
+            @if(auth()->user()->isAdmin() || auth()->user()->isTicketSupervisor())
                 <div class="form-group {{ $errors->has('assigned_to_user_id') ? 'has-error' : '' }}">
                     <label for="assigned_to_user">{{ trans('cruds.ticket.fields.assigned_to_user') }}</label>
                     <select name="assigned_to_user_id" id="assigned_to_user" class="form-control select2">
@@ -163,6 +163,23 @@
                             {{ $errors->first('assigned_to_user_id') }}
                         </em>
                     @endif
+                </div>
+            @endif
+            @if(auth()->user()->isAdmin() || auth()->user()->isTicketSupervisor())
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <label for="expire_date">{{ trans('cruds.ticket.fields.expire_date') }}</label>
+                            <input type="date" id="expire_date" name="expire_date" class="form-control"
+                            value="{{ old('expire_date', isset($ticket) && $ticket->expire_date ? $ticket->expire_date->format('Y-m-d') : '') }}">
+
+                        </div>
+                        <div class="col-lg-2">
+                            <label for="reminder_days">{{ trans('cruds.ticket.fields.reminder_days') }}</label>
+                            <input type="number" id="reminder_days" name="reminder_days" class="form-control" value="{{ old('reminder_days', isset($ticket) ? $ticket->reminder_days : '') }}">
+                        </div>
+                    
+                    </div>
                 </div>
             @endif
             <div>
